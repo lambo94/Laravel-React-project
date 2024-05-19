@@ -109,25 +109,6 @@ export default function AuthenticatedLayout({ user, header, children }) {
                         </NavLink>
                     </div>
 
-                    //need to figure out to get these tabs to render
-                    {/*<div className="pt-2 pb-3 space-y-1">*/}
-                    {/*    <ResponsiveNavLink href={route('project.index')} active={route().current('project.index')}>*/}
-                    {/*        Projects*/}
-                    {/*    </ResponsiveNavLink>*/}
-                    {/*</div>*/}
-
-                    {/*<div className="pt-2 pb-3 space-y-1">*/}
-                    {/*    <ResponsiveNavLink href={route('task.index')} active={route().current('task.index')}>*/}
-                    {/*        All tasks*/}
-                    {/*    </ResponsiveNavLink>*/}
-                    {/*</div>*/}
-
-                    {/*<div className="pt-2 pb-3 space-y-1">*/}
-                    {/*    <ResponsiveNavLink href={route('users.index')} active={route().current('users.index')}>*/}
-                    {/*        Users*/}
-                    {/*    </ResponsiveNavLink>*/}
-                    {/*</div>*/}
-
 
                         <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
                             <div className="px-4">
