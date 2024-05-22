@@ -1,7 +1,6 @@
 import {Link} from "@inertiajs/react";
 
 export default function Pagination({ links, queryParams }) {
-    console.log(queryParams);
     return (
         <nav className="text-centre mt-4">
             {links.map(link => (
@@ -13,7 +12,6 @@ export default function Pagination({ links, queryParams }) {
                     }
                     key={link.label}
                     href={link.url || ""}
-                    query={queryParams}
                     dangerouslySetInnerHTML={{__html: link.label}}
                 ></Link>
             ))}

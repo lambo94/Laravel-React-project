@@ -1,12 +1,13 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head, Link, router} from '@inertiajs/react';
-import Pagination from "@/Components/pagination.jsx";
+import Pagination from "@/Components/Pagination.jsx";
 import {PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP} from "@/constrants.jsx";
 import TextInput from "@/Components/TextInput.jsx";
 import SelectInput from "@/Components/SelectInput.jsx";
 import SortableHeading from "@/Components/SortableHeading.jsx";
+import DeleteProjectForm from "@/Pages/Project/DeleteProjectForm.jsx";
 
-export default function Index({auth, projects, queryParams = null}) {
+export default function Index({auth, projects, queryParams = null, success}) {
     queryParams = queryParams || {};
 
     const searchFieldChanged = (name, value) => {
@@ -28,30 +29,49 @@ export default function Index({auth, projects, queryParams = null}) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Projects</h2>}
+            header={
+                <div className="flex justify-between items-center">
+                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Projects</h2>
+                    <Link
+                        className="bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                        href={route('project.create')}
+                    >
+                        Create Project
+                    </Link>
+                </div>
+            }
         >
-            <Head title="Projects" />
+            <Head title="Projects"/>
+
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                {success && (
+                    <div className="bg-emerald-500 py-2 px-4 text-white rounded mb-6">
+                        {success}
+                    </div>
+                )
+                }
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className='overflow-auto'>
                                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-t border-b border-gray-400">
                                     <tr className="text-nowrap">
-                                        <SortableHeading name='id' queryParams={queryParams} />
+                                        <SortableHeading name='id' queryParams={queryParams} page={'project.index'}/>
                                         <th className="px-3 py-3">Image</th>
-                                        <SortableHeading name='name' queryParams={queryParams} />
-                                        <SortableHeading name='status' queryParams={queryParams} />
+                                        <SortableHeading name='name' queryParams={queryParams} page={'project.index'}/>
+                                        <SortableHeading name='status' queryParams={queryParams} page={'project.index'}/>
                                         <SortableHeading
                                             name='created_at'
                                             queryParams={queryParams}
-                                            column_text='Created Date'
+                                            columnText='Created Date'
+                                            page={'project.index'}
                                         />
                                         <SortableHeading
                                             name='due_date'
                                             queryParams={queryParams}
-                                            column_text='Due Date'
+                                            columnText='Due Date'
+                                            page={'project.index'}
                                         />
                                         <th className="px-3 py-3">Created by</th>
                                         <th className="px-3 py-3">Actions</th>
@@ -87,14 +107,14 @@ export default function Index({auth, projects, queryParams = null}) {
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3"></th>
                                         <th className="px-3 py-3">
-                                            <p
+                                            <button
                                                 onClick={e => {
-                                                    queryParams.length = 0
+                                                    router.get(route('project.index'));
                                                 }}
                                                 className="text-red-500 cursor-pointer"
                                             >
                                                 Clear Filters
-                                            </p>
+                                            </button>
                                         </th>
                                     </tr>
                                     </thead>
@@ -124,18 +144,13 @@ export default function Index({auth, projects, queryParams = null}) {
                                             <td className="px-3 py-3">{project.due_date}</td>
                                             <td className="px-3 py-3">{project.created_by.name}</td>
                                             <td className="px-3 py-3">
-                                                <Link
-                                                    href={route('project.edit', project.id)}
+                                                <a
                                                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline mx-1"
+                                                    href={route("project.edit", project)}
                                                 >
                                                     Edit
-                                                </Link>
-                                                <Link
-                                                    href={route('project.destroy', project.id)}
-                                                    className="font-medium text-red-600 dark:text-red-500 hover:underline mx-1"
-                                                >
-                                                    Delete
-                                                </Link>
+                                                </a>
+                                                <DeleteProjectForm project={project} />
                                             </td>
                                         </tr>
                                     ))}
